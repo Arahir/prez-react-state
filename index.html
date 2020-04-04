@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/moon.css" />
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css" />
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? "css/print/pdf.css"
+        : "css/print/paper.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Le state dans les applications front</h1>
+        </section>
+        <section>
+          <section>
+            <h2>Un peu d'histoire</h2>
+          </section>
+          <section>
+            <h3>1994-2012: La genèse</h3>
+            <p>
+              Server side rendering en php et widget jquery. La vie était simple
+              pas besoin de state
+            </p>
+            <img src="./jquery.png" alt="datepicker" />
+          </section>
+          <section>
+            <h3>2012: La révolution des single page app</h3>
+            <img src="./revolution.jpg" alt="jobs" />
+          </section>
+          <section>
+            <h3>Angular</h3>
+            <img src="./angular1_easy.png" alt="easy" width="500px" />
+          </section>
+          <section>
+            <h3>Reality</h3>
+            <img src="./angular1_hard.png" alt="easy" width="600px" />
+          </section>
+          <section>
+            <h3>Solution dans l'api?</h3>
+            <img src="./question_yohan.png" alt="easy" width="200px" />
+          </section>
+          <section>
+            <h3>LA solution: State global</h3>
+            <img
+              src="./global_state_angular.png"
+              alt="angular-state"
+              width="500px"
+            />
+          </section>
+          <section>
+            <h4>
+              qu'est ce qui se passe quand Matthieu fraichement diplomé doit
+              architecturer un monolite?
+            </h4>
+            <ul>
+              <li>un fichier de 4000 lignes</li>
+              <li>Pas de typage</li>
+              <li>Pas de test</li>
+            </ul>
+          </section>
+          <section>
+            <h6>Dan à la rescousse</h6>
+            <img src="./dan_abramov.jpeg" width="500" />
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1>Redux</h1>
+          </section>
+          <section>
+            <h2>
+              Les limites de react
+            </h2>
+          </section>
+          <section>
+            <h3>React data flow 1</h3>
+            <img src="./react_flow.png" alt="" />
+          </section>
+          <section>
+            <h3>React data flow 2</h3>
+            <img src="./react_flow_3.png" alt="" />
+          </section>
+          <section>
+            <h3>reduce</h3>
+            <pre>
+							<code>
+const items = [
+  {type: 'vegetable', name: 'carrot'}, 
+  {type: 'vegetable', name: 'green beans'}, 
+  {type: 'fruit', name: 'apple'}
+]
+
+const cart = {fruit: [], vegetable: []}
+
+function organiseCart = (organised, item) => {
+  organised[item.type].push(item);
+  return organised;
+}
+
+const organisedCart = items.reduce(organiseCart, cart);
+							</code>
+						</pre>
+          </section>
+          <section>
+            <pre>
+							<code>
+{
+	"fruit":[
+		{"type":"fruit","name":"apple"}
+	],
+	"vegetable":[
+		{"type":"vegetable","name":"carrot"},
+		{"type":"vegetable","name":"green beans"}
+	]
+}
+							</code>
+						</pre>
+          </section>
+          <section>
+            <h4>Action</h4>
+            <pre>
+							<code>
+{
+  type: 'ADD_CR',
+  payload: {
+	  id: '12',
+	  resourceType: 'CommunicationRequest',
+	  requester: 'Practitioner/24'
+  }
+}
+							</code>
+						</pre>
+          </section>
+          <section>
+            <h4>Reducer</h4>
+            <pre>
+							<code>
+const initialState = {};
+function crReducer(state = initialState, action) {
+  if(action.type === 'ADD_CR') {
+	  return {
+		  ...state,
+		  [action.payload.id]: action.payload
+	  }
+	}
+	return state
+}
+							</code>
+						</pre>
+          </section>
+          <section>
+            <h4>Nouveau State</h4>
+            <pre>
+							<code>
+{
+	12: {
+		id: '12',
+		resourceType: 'CommunicationRequest',
+		requester: 'Practitioner/24'
+	}
+}
+							</code>
+						</pre>
+          </section>
+          <section>
+            <h4>L'intégralité du code de redux</h4>
+            <pre>
+							<code>
+actions.reduce(reducer, initialState)
+							</code>
+						</pre>
+          </section>
+          <section>
+            <h3>Lib React-Redux</h3>
+            <div>donne accès au state à des composants</div>
+            <div>permet de dispatch des actions pour modifier le state</div>
+          </section>
+          <section>
+            <h4>Retournons à notre exemple</h4>
+            <img src="./redux.png" alt="redux" width="600px" />
+          </section>
+          <section>
+            <h3>En résumé</h3>
+            <ul>
+              <li>
+                redux administre un state unique et accessible partout dans une
+                app react
+              </li>
+              <li>on remplit le state en dispatchant des actions</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>Les middlewares</h2>
+          <p>Gestion des effets de bord</p>
+          <img
+            src="https://media.giphy.com/media/4mouUtZ8qsTni/giphy.gif"
+            alt="middleware"
+          />
+        </section>
+        <section>
+          <h3>redux thunk</h3>
+          <p>surcouche d'action</p>
+          <img src="./thunk.png" alt="thunk" />
+        </section>
+        <section>
+          <h3>redux loop</h3>
+          <p>surcouche de reducer</p>
+          <img src="./loop.png" alt="loop" width="450px" />
+        </section>
+
+        <section>
+          <h3>redux sagas</h3>
+          <img src="./sagas.png" alt="sagas" width="600px" />
+        </section>
+
+        <section>
+          <section>
+            <h2>Selector</h2>
+          </section>
+          <section>
+            <h3>
+              Qu'est ce qui declenche le rerendering d'un composant react?
+            </h3>
+          </section>
+          <section>
+            <h3>Comment lier le state à une component</h3>
+            <img src="./connect.png" alt="" />
+            <img src="./dashboard.png" alt="" />
+          </section>
+          <section>
+            <h3>Selector</h3>
+            <img src="./mapStateToProps.png" alt="" />
+          </section>
+        </section>
+        <section>
+          <h2>Redux est mort :(</h2>
+          <img
+            src="https://media.giphy.com/media/lrDNnVxfnoQE59hBYf/giphy.gif"
+            alt=""
+          />
+        </section>
+
+        <section>
+          <section>
+            <h3>React context + useReducer</h3>
+            <img
+              src="https://media.giphy.com/media/h7dboNZPsoGwRg9bid/giphy.gif"
+              alt="context"
+            />
+          </section>
+
+          <section>
+            <h3>React context</h3>
+            <p>introduit en react 16.3</p>
+            <img src="./react-context.png" alt="context" width="500px" />
+          </section>
+          <section>
+            <h3>UseReducer</h3>
+            <p>introduit dans react 16.8</p>
+            <img src="./usereducer.png" alt="usereducer" />
+          </section>
+        </section>
+        <section>
+          <h3>graphql + appollo stack</h3>
+          <h3>firebase</h3>
+        </section>
+        <section>
+          <h2>Question?</h2>
+          <img
+            src="https://media.giphy.com/media/h0Xez8ow1UOVq/giphy.gif"
+            alt=""
+          />
+        </section>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        hash: true,
+        dependencies: [
+          { src: "plugin/markdown/marked.js" },
+          { src: "plugin/markdown/markdown.js" },
+          { src: "plugin/highlight/highlight.js" },
+          { src: "plugin/notes/notes.js", async: true },
+          // Zoom in and out with Alt+click
+          { src: "plugin/zoom-js/zoom.js", async: true }
+        ]
+      });
+    </script>
+  </body>
+</html>
