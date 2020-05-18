@@ -31,11 +31,27 @@
     <div class="reveal">
       <div class="slides">
         <section>
-          <h1>Le state dans les applications front</h1>
+          <section>
+            <h1>Le state dans les applications front</h1>
+          </section>
+          <section>
+            <h3>Sommaire</h3>
+            <ul>
+              <li>Un peu d'histoire</li>
+              <li>Redux</li>
+              <li>Les middleware</li>
+              <li>Selector</li>
+              <li>Post redux</li>
+            </ul>
+          </section>
         </section>
         <section>
           <section>
             <h2>Un peu d'histoire</h2>
+            <img
+              src="https://media.giphy.com/media/DZdE6qEzCfRHW/giphy.gif"
+              alt="history"
+            />
           </section>
           <section>
             <h3>1994-2012: La genèse</h3>
@@ -58,10 +74,6 @@
             <img src="./angular1_hard.png" alt="easy" width="600px" />
           </section>
           <section>
-            <h3>Solution dans l'api?</h3>
-            <img src="./question_yohan.png" alt="easy" width="200px" />
-          </section>
-          <section>
             <h3>LA solution: State global</h3>
             <img
               src="./global_state_angular.png"
@@ -72,7 +84,7 @@
           <section>
             <h4>
               qu'est ce qui se passe quand Matthieu fraichement diplomé doit
-              architecturer un monolite?
+              architecturer un state global?
             </h4>
             <ul>
               <li>un fichier de 4000 lignes</li>
@@ -95,11 +107,15 @@
             </h2>
           </section>
           <section>
-            <h3>React data flow 1</h3>
+            <h3>React data flow</h3>
             <img src="./react_flow.png" alt="" />
           </section>
           <section>
-            <h3>React data flow 2</h3>
+            <h3>React data flow</h3>
+            <img src="./flow_react-4.png" alt="" />
+          </section>
+          <section>
+            <h3>React data flow</h3>
             <img src="./react_flow_3.png" alt="" />
           </section>
           <section>
@@ -139,7 +155,7 @@ const organisedCart = items.reduce(organiseCart, cart);
 						</pre>
           </section>
           <section>
-            <h4>Action</h4>
+            <h4>Redux - Action</h4>
             <pre>
 							<code>
 {
@@ -154,7 +170,7 @@ const organisedCart = items.reduce(organiseCart, cart);
 						</pre>
           </section>
           <section>
-            <h4>Reducer</h4>
+            <h4>Redux - Reducer</h4>
             <pre>
 							<code>
 const initialState = {};
@@ -172,23 +188,17 @@ function crReducer(state = initialState, action) {
           </section>
           <section>
             <h4>Nouveau State</h4>
-            <pre>
-							<code>
-{
-	12: {
-		id: '12',
-		resourceType: 'CommunicationRequest',
-		requester: 'Practitioner/24'
-	}
-}
-							</code>
-						</pre>
+            <div style="display: flex; margin-left: -175px;">
+              <img src="./action.png" alt="" />
+              <img src="./reducer.png" alt="" />
+              <img src="./state.png" alt="" />
+            </div>
           </section>
           <section>
             <h4>L'intégralité du code de redux</h4>
             <pre>
 							<code>
-actions.reduce(reducer, initialState)
+const state = actions.reduce(reducer, initialState)
 							</code>
 						</pre>
           </section>
@@ -210,6 +220,14 @@ actions.reduce(reducer, initialState)
               </li>
               <li>on remplit le state en dispatchant des actions</li>
             </ul>
+          </section>
+          <section>
+            <h4>Communication avec l'API</h4>
+            <img src="./component-without-middleware.png" alt="" />
+          </section>
+          <section>
+            <h4>Communication avec l'API</h4>
+            <img src="./component-middleware.png" alt="" />
           </section>
         </section>
 
@@ -247,7 +265,7 @@ actions.reduce(reducer, initialState)
             </h3>
           </section>
           <section>
-            <h3>Comment lier le state à une component</h3>
+            <h3>Comment lier le state à un component</h3>
             <img src="./connect.png" alt="" />
             <img src="./dashboard.png" alt="" />
           </section>
@@ -263,7 +281,6 @@ actions.reduce(reducer, initialState)
             alt=""
           />
         </section>
-
         <section>
           <section>
             <h3>React context + useReducer</h3>
@@ -312,8 +329,8 @@ actions.reduce(reducer, initialState)
           { src: "plugin/highlight/highlight.js" },
           { src: "plugin/notes/notes.js", async: true },
           // Zoom in and out with Alt+click
-          { src: "plugin/zoom-js/zoom.js", async: true }
-        ]
+          { src: "plugin/zoom-js/zoom.js", async: true },
+        ],
       });
     </script>
   </body>
